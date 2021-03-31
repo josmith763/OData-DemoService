@@ -1,6 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>my.group.id</groupId>
   <artifactId>DemoService</artifactId>
   <packaging>war</packaging>
@@ -8,43 +9,30 @@
 
   <name>DemoService Maven Webapp</name>
 
-  <build>
-  <plugins>
-    <plugin>
-      <groupId>org.apache.tomcat.maven</groupId>
-      <artifactId>tomcat7-maven-plugin</artifactId>
-      <version>2.2</version>
-      <configuration>
-        <url>http://localhost:8080/manager/text</url>
-
-        <server>TomcatServer</server>
-        <path>/demoservice</path>
-        <username>admin</username>
-        <password>admin</password>
-      </configuration>
-    </plugin>
-  </plugins>
-  </build>
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
     <javax.version>2.5</javax.version>
+    <java.version>11</java.version>
     <odata.version>4.8.0</odata.version>
     <slf4j.version>1.7.7</slf4j.version>
+    <spring-boot.version>2.4.4</spring-boot.version>
   </properties>
 
   <dependencies>
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>${javax.version}</version>
-      <scope>provided</scope>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <version>${spring-boot.version}</version>
     </dependency>
-
-
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <version>${spring-boot.version}</version>
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
       <groupId>org.apache.olingo</groupId>
@@ -83,6 +71,14 @@
     </dependency>
   </dependencies>
 
-
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring-boot.version}</version>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
