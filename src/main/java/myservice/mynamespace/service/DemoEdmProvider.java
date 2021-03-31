@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.olingo.commons.api.edm.EdmComplexType;
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.olingo.commons.api.edm.provider.CsdlAbstractEdmProvider;
@@ -39,18 +40,28 @@ import org.apache.olingo.commons.api.edm.provider.CsdlSchema;
 public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
     // Service Namespace
-    public static final String NAMESPACE = "OData.Demo";
+    public static final String NAMESPACE = "OData.PetStore";
 
     // EDM Container
     public static final String CONTAINER_NAME = "Container";
     public static final FullQualifiedName CONTAINER = new FullQualifiedName(NAMESPACE, CONTAINER_NAME);
 
     // Entity Types Names
-    public static final String ET_PRODUCT_NAME = "Product";
-    public static final FullQualifiedName ET_PRODUCT_FQN = new FullQualifiedName(NAMESPACE, ET_PRODUCT_NAME);
+    public static final String ET_PET_NAME = "Pet";
+    public static final FullQualifiedName ET_PET_FQN = new FullQualifiedName(NAMESPACE, ET_PET_NAME);
+
+    // Complex types
+    public static final String CT_CATEGORY_NAME = "category";
+    public static final FullQualifiedName CT_CATEGORY_FQN = new FullQualifiedName(NAMESPACE, CT_CATEGORY_NAME);
+
+    public static final String CT_TAG_NAME = "tags";
+    public static final FullQualifiedName CT_TAG_FQN = new FullQualifiedName(NAMESPACE, CT_TAG_NAME);
 
     // Entity Set Names
-    public static final String ES_PRODUCTS_NAME = "Products";
+    public static final String ES_PETS_NAME = "Pets";
+
+
+    // entity set is plural of feach entity type
 
     @Override
     public CsdlEntityType getEntityType(FullQualifiedName entityTypeName) {
@@ -58,14 +69,24 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         // this method is called for each EntityType that are configured in the Schema
         CsdlEntityType entityType = null;
 
-        if (entityTypeName.equals(ET_PRODUCT_FQN)) {
+        if (entityTypeName.equals(ET_PET_FQN)) {
             // create EntityType properties
-           /* CsdlProperty id = new CsdlProperty().setName("ID")
+            CsdlProperty id = new CsdlProperty().setName("id")
                     .setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
-            CsdlProperty name = new CsdlProperty().setName("Name")
+            CsdlProperty name = new CsdlProperty().setName("name")
                     .setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-            CsdlProperty description = new CsdlProperty().setName("Description")
-                    .setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());*/
+            // if a complex type (such as an object), add here as property, and add as getComplexType
+            CsdlProperty category = new CsdlProperty().setName(CT_CATEGORY_NAME)
+                    .setType(CT_CATEGORY_FQN);
+            CsdlProperty photoUrls = new CsdlProperty().setName("photoUrls")
+                    .setType(EdmPrimitiveTypeKind.String.getFullQualifiedName())
+                    .setCollection(true);
+            CsdlProperty tags = new CsdlProperty().setName(CT_TAG_NAME)
+                    .setType(CT_TAG_FQN)
+                    .setCollection(true);
+            CsdlProperty status = new CsdlProperty().setName("status")
+                    .setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+
 
             // create PropertyRef for Key element
             //CsdlPropertyRef propertyRef = new CsdlPropertyRef();
@@ -73,8 +94,8 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
             // configure EntityType
             entityType = new CsdlEntityType();
-            entityType.setName(ET_PRODUCT_NAME);
-            //entityType.setProperties(Arrays.asList(id, name, description));
+            entityType.setName(ET_PET_NAME);
+            entityType.setProperties(Arrays.asList(id, name, category, photoUrls, tags, status));
             //entityType.setKey(Arrays.asList(propertyRef));
 
         }
@@ -84,17 +105,44 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
     }
 
     @Override
+    public CsdlComplexType getComplexType(final FullQualifiedName complexTypeName) {
+        CsdlComplexType complexType = null;
+        if (complexTypeName.equals(CT_CATEGORY_FQN)) {
+            complexType = new CsdlComplexType().setName(CT_CATEGORY_NAME)
+                    .setProperties(Arrays.asList(
+                            new CsdlProperty()
+                                    .setName("id")
+                                    .setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName()),
+                            new CsdlProperty()
+                                    .setName("name")
+                                    .setType(EdmPrimitiveTypeKind.String.getFullQualifiedName())));
+        } else if (complexTypeName.equals(CT_TAG_FQN)) {
+            // this doesn't really need to be repeated, but just keeping it simple for now to understand why
+            complexType = new CsdlComplexType().setName(CT_TAG_NAME)
+                    .setProperties(Arrays.asList(
+                            new CsdlProperty()
+                                    .setName("id")
+                                    .setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName()),
+                            new CsdlProperty()
+                                    .setName("name")
+                                    .setType(EdmPrimitiveTypeKind.String.getFullQualifiedName())));
+        }
+        return complexType;
+    }
+
+
+    @Override
     public CsdlEntitySet getEntitySet(FullQualifiedName entityContainer, String entitySetName) {
 
         CsdlEntitySet entitySet = null;
 
         if (entityContainer.equals(CONTAINER)) {
 
-            if (entitySetName.equals(ES_PRODUCTS_NAME)) {
+            if (entitySetName.equals(ES_PETS_NAME)) {
 
                 entitySet = new CsdlEntitySet();
-                entitySet.setName(ES_PRODUCTS_NAME);
-                entitySet.setType(ET_PRODUCT_FQN);
+                entitySet.setName(ES_PETS_NAME);
+                entitySet.setType(ET_PET_FQN);
 
                 // navigation
                /* CsdlNavigationPropertyBinding navPropBinding = new CsdlNavigationPropertyBinding();
@@ -132,11 +180,14 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
         // add EntityTypes
         List<CsdlEntityType> entityTypes = new ArrayList<CsdlEntityType>();
-        entityTypes.add(getEntityType(ET_PRODUCT_FQN));
+        entityTypes.add(getEntityType(ET_PET_FQN));
         schema.setEntityTypes(entityTypes);
 
         // add Complex Types
         List<CsdlComplexType> complexTypes = new ArrayList<CsdlComplexType>();
+        // add the complex type fqns
+        complexTypes.add(getComplexType(CT_CATEGORY_FQN));
+        complexTypes.add(getComplexType(CT_TAG_FQN));
         schema.setComplexTypes(complexTypes);
 
         // add EntityContainer

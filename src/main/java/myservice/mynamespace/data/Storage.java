@@ -56,7 +56,7 @@ public class Storage {
     public EntityCollection readEntitySetData(EdmEntitySet edmEntitySet) {
         EntityCollection entitySet = null;
 
-        if (edmEntitySet.getName().equals(DemoEdmProvider.ES_PRODUCTS_NAME)) {
+        if (edmEntitySet.getName().equals(DemoEdmProvider.ES_PETS_NAME)) {
             entitySet = getProducts();
         }
         return entitySet;
@@ -67,7 +67,7 @@ public class Storage {
 
         EdmEntityType edmEntityType = edmEntitySet.getEntityType();
 
-        if (edmEntityType.getName().equals(DemoEdmProvider.ET_PRODUCT_NAME)) {
+        if (edmEntityType.getName().equals(DemoEdmProvider.ET_PET_NAME)) {
             entity = getProduct(edmEntityType, keyParams);
         }
         return entity;
@@ -78,7 +78,7 @@ public class Storage {
         EdmEntityType edmEntityType = edmEntitySet.getEntityType();
 
         // actually, this is only required if we have more than one Entity Type
-        if (edmEntityType.getName().equals(DemoEdmProvider.ET_PRODUCT_NAME)) {
+        if (edmEntityType.getName().equals(DemoEdmProvider.ET_PET_NAME)) {
             return createProduct(edmEntityType, entityToCreate);
         }
 
@@ -94,7 +94,7 @@ public class Storage {
         EdmEntityType edmEntityType = edmEntitySet.getEntityType();
 
         // actually, this is only required if we have more than one Entity Type
-        if (edmEntityType.getName().equals(DemoEdmProvider.ET_PRODUCT_NAME)) {
+        if (edmEntityType.getName().equals(DemoEdmProvider.ET_PET_NAME)) {
             updateProduct(edmEntityType, keyParams, updateEntity, httpMethod);
         }
     }
@@ -105,7 +105,7 @@ public class Storage {
         EdmEntityType edmEntityType = edmEntitySet.getEntityType();
 
         // actually, this is only required if we have more than one Entity Type
-        if (edmEntityType.getName().equals(DemoEdmProvider.ET_PRODUCT_NAME)) {
+        if (edmEntityType.getName().equals(DemoEdmProvider.ET_PET_NAME)) {
             deleteProduct(edmEntityType, keyParams);
         }
     }
@@ -335,8 +335,8 @@ public class Storage {
     }
 
     private String getEntitySetName(Entity entity) {
-        if(DemoEdmProvider.ET_PRODUCT_FQN.getFullQualifiedNameAsString().equals(entity.getType())) {
-            return DemoEdmProvider.ES_PRODUCTS_NAME;
+        if(DemoEdmProvider.ET_PET_FQN.getFullQualifiedNameAsString().equals(entity.getType())) {
+            return DemoEdmProvider.ES_PETS_NAME;
         }
         return entity.getType();
     }
