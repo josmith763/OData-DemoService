@@ -75,6 +75,9 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
             // if a complex type (such as an object), add here as property, and add as getComplexType
             CsdlProperty category = new CsdlProperty().setName(CT_CATEGORY_NAME)
                     .setType(CT_CATEGORY_FQN);
+            CsdlProperty photoUrls = new CsdlProperty().setName("photoUrls")
+                    .setType(EdmPrimitiveTypeKind.String.getFullQualifiedName())
+                    .setCollection(true);
 
 
             // create PropertyRef for Key element
@@ -84,7 +87,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
             // configure EntityType
             entityType = new CsdlEntityType();
             entityType.setName(ET_PET_NAME);
-            entityType.setProperties(Arrays.asList(id, name, category));
+            entityType.setProperties(Arrays.asList(id, name, category, photoUrls));
             //entityType.setKey(Arrays.asList(propertyRef));
 
         }
