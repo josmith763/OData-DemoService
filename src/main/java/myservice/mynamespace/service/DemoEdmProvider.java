@@ -122,13 +122,15 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
                     .setType(EdmPrimitiveTypeKind.DateTimeOffset.getFullQualifiedName());
             CsdlProperty status = new CsdlProperty().setName("status")
                     .setType(ENT_ORDER_STATUS_FQN);
+            CsdlProperty complete = new CsdlProperty().setName("complete")
+                    .setType(EdmPrimitiveTypeKind.Boolean.getFullQualifiedName());
 
             CsdlPropertyRef propertyRef = new CsdlPropertyRef();
             propertyRef.setName("id");
 
             entityType = new CsdlEntityType();
             entityType.setName(ET_STORE_NAME);
-            entityType.setProperties(Arrays.asList(id, petId, quantity, shipDate, status));
+            entityType.setProperties(Arrays.asList(id, petId, quantity, shipDate, status, complete));
             entityType.setKey(Arrays.asList(propertyRef));
         }
 
