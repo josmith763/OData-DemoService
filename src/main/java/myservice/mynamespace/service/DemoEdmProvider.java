@@ -84,6 +84,8 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
             CsdlProperty tags = new CsdlProperty().setName(CT_TAG_NAME)
                     .setType(CT_TAG_FQN)
                     .setCollection(true);
+            CsdlProperty status = new CsdlProperty().setName("status")
+                    .setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 
 
             // create PropertyRef for Key element
@@ -93,7 +95,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
             // configure EntityType
             entityType = new CsdlEntityType();
             entityType.setName(ET_PET_NAME);
-            entityType.setProperties(Arrays.asList(id, name, category, photoUrls, tags));
+            entityType.setProperties(Arrays.asList(id, name, category, photoUrls, tags, status));
             //entityType.setKey(Arrays.asList(propertyRef));
 
         }
