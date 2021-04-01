@@ -45,11 +45,11 @@ import myservice.mynamespace.util.Util;
 public class Storage {
 
     // represent our database
-    private List<Entity> productList;
+    private List<Entity> petList;
 
     public Storage() {
 
-        productList = new ArrayList<Entity>();
+        petList = new ArrayList<Entity>();
     }
 
     /* PUBLIC FACADE */
@@ -57,7 +57,7 @@ public class Storage {
         EntityCollection entitySet = null;
 
         if (edmEntitySet.getName().equals(DemoEdmProvider.ES_PETS_NAME)) {
-            entitySet = getProducts();
+            entitySet = getPets();
         }
         return entitySet;
     }
@@ -68,7 +68,7 @@ public class Storage {
         EdmEntityType edmEntityType = edmEntitySet.getEntityType();
 
         if (edmEntityType.getName().equals(DemoEdmProvider.ET_PET_NAME)) {
-            entity = getProduct(edmEntityType, keyParams);
+            entity = getPet(edmEntityType, keyParams);
         }
         return entity;
     }
@@ -79,7 +79,7 @@ public class Storage {
 
         // actually, this is only required if we have more than one Entity Type
         if (edmEntityType.getName().equals(DemoEdmProvider.ET_PET_NAME)) {
-            return createProduct(edmEntityType, entityToCreate);
+            return createPet(edmEntityType, entityToCreate);
         }
 
         return null;
@@ -95,7 +95,7 @@ public class Storage {
 
         // actually, this is only required if we have more than one Entity Type
         if (edmEntityType.getName().equals(DemoEdmProvider.ET_PET_NAME)) {
-            updateProduct(edmEntityType, keyParams, updateEntity, httpMethod);
+            updatePet(edmEntityType, keyParams, updateEntity, httpMethod);
         }
     }
 
@@ -106,7 +106,7 @@ public class Storage {
 
         // actually, this is only required if we have more than one Entity Type
         if (edmEntityType.getName().equals(DemoEdmProvider.ET_PET_NAME)) {
-            deleteProduct(edmEntityType, keyParams);
+            deletePet(edmEntityType, keyParams);
         }
     }
 
@@ -185,30 +185,30 @@ public class Storage {
 
     /* INTERNAL */
 
-    private EntityCollection getProducts() {
+    private EntityCollection getPets() {
         EntityCollection retEntitySet = new EntityCollection();
 
-        for (Entity productEntity : this.productList) {
-            retEntitySet.getEntities().add(productEntity);
+        for (Entity petEntity : this.petList) {
+            retEntitySet.getEntities().add(petEntity);
         }
 
         return retEntitySet;
     }
 
-    private Entity getProduct(EdmEntityType edmEntityType, List<UriParameter> keyParams) throws ODataApplicationException {
+    private Entity getPet(EdmEntityType edmEntityType, List<UriParameter> keyParams) throws ODataApplicationException {
 
         // the list of entities at runtime
-        EntityCollection entityCollection = getProducts();
+        EntityCollection entityCollection = getPets();
 
         /* generic approach to find the requested entity */
         return Util.findEntity(edmEntityType, entityCollection, keyParams);
     }
 
-    private Entity createProduct(EdmEntityType edmEntityType, Entity entity) {
+    private Entity createPet(EdmEntityType edmEntityType, Entity entity) {
 
         // the ID of the newly created product entity is generated automatically
         int newId = 1;
-        while (productIdExists(newId)) {
+        while (petIdExists(newId)) {
             newId++;
         }
 
@@ -220,15 +220,15 @@ public class Storage {
             entity.getProperties().add(new Property(null, "ID", ValueType.PRIMITIVE, newId));
         }
         //entity.setId(createId("Products", newId));
-        this.productList.add(entity);
+        this.petList.add(entity);
 
         return entity;
 
     }
 
-    private boolean productIdExists(int id) {
+    private boolean petIdExists(int id) {
 
-        for (Entity entity : this.productList) {
+        for (Entity entity : this.petList) {
             Integer existingID = (Integer) entity.getProperty("ID").getValue();
             if (existingID.intValue() == id) {
                 return true;
@@ -238,17 +238,17 @@ public class Storage {
         return false;
     }
 
-    private void updateProduct(EdmEntityType edmEntityType, List<UriParameter> keyParams, Entity entity,
+    private void updatePet(EdmEntityType edmEntityType, List<UriParameter> keyParams, Entity entity,
                                HttpMethod httpMethod) throws ODataApplicationException {
 
-        Entity productEntity = getProduct(edmEntityType, keyParams);
-        if (productEntity == null) {
+        Entity petEntity = getPet(edmEntityType, keyParams);
+        if (petEntity == null) {
             throw new ODataApplicationException("Entity not found", HttpStatusCode.NOT_FOUND.getStatusCode(), Locale.ENGLISH);
         }
 
         // loop over all properties and replace the values with the values of the given payload
         // Note: ignoring ComplexType, as we don't have it in our odata model
-        List<Property> existingProperties = productEntity.getProperties();
+        List<Property> existingProperties = petEntity.getProperties();
         for (Property existingProp : existingProperties) {
             String propName = existingProp.getName();
 
@@ -277,15 +277,15 @@ public class Storage {
         }
     }
 
-    private void deleteProduct(EdmEntityType edmEntityType, List<UriParameter> keyParams)
+    private void deletePet(EdmEntityType edmEntityType, List<UriParameter> keyParams)
             throws ODataApplicationException {
 
-        Entity productEntity = getProduct(edmEntityType, keyParams);
-        if (productEntity == null) {
+        Entity petEntity = getPet(edmEntityType, keyParams);
+        if (petEntity == null) {
             throw new ODataApplicationException("Entity not found", HttpStatusCode.NOT_FOUND.getStatusCode(), Locale.ENGLISH);
         }
 
-        this.productList.remove(productEntity);
+        this.petList.remove(petEntity);
     }
 
     /* HELPER */
