@@ -25,17 +25,7 @@ import java.util.List;
 import org.apache.olingo.commons.api.edm.EdmComplexType;
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
-import org.apache.olingo.commons.api.edm.provider.CsdlAbstractEdmProvider;
-import org.apache.olingo.commons.api.edm.provider.CsdlComplexType;
-import org.apache.olingo.commons.api.edm.provider.CsdlEntityContainer;
-import org.apache.olingo.commons.api.edm.provider.CsdlEntityContainerInfo;
-import org.apache.olingo.commons.api.edm.provider.CsdlEntitySet;
-import org.apache.olingo.commons.api.edm.provider.CsdlEntityType;
-import org.apache.olingo.commons.api.edm.provider.CsdlNavigationProperty;
-import org.apache.olingo.commons.api.edm.provider.CsdlNavigationPropertyBinding;
-import org.apache.olingo.commons.api.edm.provider.CsdlProperty;
-import org.apache.olingo.commons.api.edm.provider.CsdlPropertyRef;
-import org.apache.olingo.commons.api.edm.provider.CsdlSchema;
+import org.apache.olingo.commons.api.edm.provider.*;
 
 public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
@@ -63,6 +53,25 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
     // Entity Set Names
     public static final String ES_PETS_NAME = "Pets";
     public static final String ES_STORES_NAME = "Stores";
+
+    // Enum type
+    public static final FullQualifiedName ENT_ORDER_STATUS_FQN = new FullQualifiedName(NAMESPACE, "orderStatus");
+
+    // See: https://stackoverflow.com/a/36058012
+    public CsdlEnumType getEnumType(FullQualifiedName enumTypeName){
+        if (ENT_ORDER_STATUS_FQN.equals(enumTypeName)) {
+            return new CsdlEnumType()
+                    .setName(ENT_ORDER_STATUS_FQN.getName())
+                    .setMembers(Arrays.asList(
+                            new CsdlEnumMember().setName("placed").setValue("0"),
+                            new CsdlEnumMember().setName("approved").setValue("0"),
+                            new CsdlEnumMember().setName("delivered").setValue("0")
+                    ))
+                    .setUnderlyingType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName())
+                    ;
+        }
+        return null;
+    }
 
 
     // entity set is plural of feach entity type
@@ -111,13 +120,15 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
                     .setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
             CsdlProperty shipDate = new CsdlProperty().setName("shipDate")
                     .setType(EdmPrimitiveTypeKind.DateTimeOffset.getFullQualifiedName());
+            CsdlProperty status = new CsdlProperty().setName("status")
+                    .setType(ENT_ORDER_STATUS_FQN);
 
             CsdlPropertyRef propertyRef = new CsdlPropertyRef();
             propertyRef.setName("id");
 
             entityType = new CsdlEntityType();
             entityType.setName(ET_STORE_NAME);
-            entityType.setProperties(Arrays.asList(id, petId, quantity, shipDate));
+            entityType.setProperties(Arrays.asList(id, petId, quantity, shipDate, status));
             entityType.setKey(Arrays.asList(propertyRef));
         }
 
@@ -208,6 +219,11 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         entityTypes.add(getEntityType(ET_PET_FQN));
         entityTypes.add(getEntityType(ET_STORE_FQN));
         schema.setEntityTypes(entityTypes);
+
+        // add enum types
+        List<CsdlEnumType> enumTypes = new ArrayList<CsdlEnumType>();
+        enumTypes.add(getEnumType(ENT_ORDER_STATUS_FQN));
+        schema.setEnumTypes(enumTypes);
 
         // add Complex Types
         List<CsdlComplexType> complexTypes = new ArrayList<CsdlComplexType>();
