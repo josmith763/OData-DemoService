@@ -310,12 +310,31 @@ public class Storage {
 
         entity.addProperty(new Property(null, "id", ValueType.PRIMITIVE, 1));
         entity.addProperty(new Property(null, "name", ValueType.PRIMITIVE, "Doggie"));
+        //entity.addProperty(new Property(null, "category", ValueType.PRIMITIVE, "Sample cat"));
         //entity.addProperty(new Property(null, "tags", ValueType.PRIMITIVE, "Notebook Basic, 1.7GHz - 15 XGA - 1024MB DDR2 SDRAM - 40GB"));
+
+        /*ComplexValue complexValue = new ComplexValue();
+        Property p1 = new Property(null, "tags", ValueType.PRIMITIVE, "Sample Tag 1");
+        Property p2 = new Property(null, "tags", ValueType.PRIMITIVE, "Sample Tag 2");
+        complexValue.getValue().add(p1);
+        complexValue.getValue().add(p2);
+
+        entity.addProperty(new Property(null, "tags", ValueType.COMPLEX, complexValue));*/
+
+        ArrayList<String> strList = new ArrayList<String>();
+        strList.add("URL 1");
+        strList.add("URL 2");
+
+        entity.addProperty(new Property(null, "photoUrls", ValueType.COLLECTION_PRIMITIVE, strList));
+        //entity.addProperty(new Property(null, "photoUrls", ValueType.PRIMITIVE, '1'));
+
+
         entity.addProperty(new Property(null, "status", ValueType.PRIMITIVE, "available"));
         entity.setType(DemoEdmProvider.ET_PET_FQN.getFullQualifiedNameAsString());
         entity.setId(createId(entity, "id"));
         petList.add(entity);
     }
+
 
     private URI createId(Entity entity, String idPropertyName) {
         return createId(entity, idPropertyName, null);
