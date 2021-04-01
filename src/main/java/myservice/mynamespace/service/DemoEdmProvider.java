@@ -103,8 +103,16 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
             entityType.setKey(Arrays.asList(propertyRef));
 
         } else if (entityTypeName.equals(ET_STORE_FQN)) {
+            CsdlProperty id = new CsdlProperty().setName("id")
+                    .setType(EdmPrimitiveTypeKind.Int64.getFullQualifiedName());
+
+            CsdlPropertyRef propertyRef = new CsdlPropertyRef();
+            propertyRef.setName("id");
+
             entityType = new CsdlEntityType();
             entityType.setName(ET_STORE_NAME);
+            entityType.setProperties(Arrays.asList(id));
+            entityType.setKey(Arrays.asList(propertyRef));
         }
 
         return entityType;
