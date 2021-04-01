@@ -50,6 +50,9 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
     public static final String ET_PET_NAME = "Pet";
     public static final FullQualifiedName ET_PET_FQN = new FullQualifiedName(NAMESPACE, ET_PET_NAME);
 
+    public static final String ET_STORE_NAME = "Store";
+    public static final FullQualifiedName ET_STORE_FQN = new FullQualifiedName(NAMESPACE, ET_STORE_NAME);
+
     // Complex types
     public static final String CT_CATEGORY_NAME = "category";
     public static final FullQualifiedName CT_CATEGORY_FQN = new FullQualifiedName(NAMESPACE, CT_CATEGORY_NAME);
@@ -59,6 +62,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
     // Entity Set Names
     public static final String ES_PETS_NAME = "Pets";
+    public static final String ES_STORES_NAME = "Stores";
 
 
     // entity set is plural of feach entity type
@@ -98,6 +102,9 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
             entityType.setProperties(Arrays.asList(id, name, category, photoUrls, tags, status));
             entityType.setKey(Arrays.asList(propertyRef));
 
+        } else if (entityTypeName.equals(ET_STORE_FQN)) {
+            entityType = new CsdlEntityType();
+            entityType.setName(ET_STORE_NAME);
         }
 
         return entityType;
@@ -152,6 +159,10 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
                 navPropBindingList.add(navPropBinding);
                 entitySet.setNavigationPropertyBindings(navPropBindingList);*/
 
+            } else if (entitySetName.equals(ES_STORES_NAME)) {
+                entitySet = new CsdlEntitySet();
+                entitySet.setName(ES_STORES_NAME);
+                entitySet.setType(ET_STORE_FQN);
             }
         }
 
@@ -181,6 +192,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         // add EntityTypes
         List<CsdlEntityType> entityTypes = new ArrayList<CsdlEntityType>();
         entityTypes.add(getEntityType(ET_PET_FQN));
+        entityTypes.add(getEntityType(ET_STORE_FQN));
         schema.setEntityTypes(entityTypes);
 
         // add Complex Types
@@ -206,6 +218,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         // create EntitySets
         List<CsdlEntitySet> entitySets = new ArrayList<CsdlEntitySet>();
         entitySets.add(getEntitySet(CONTAINER, ES_PETS_NAME));
+        entitySets.add(getEntitySet(CONTAINER, ES_STORES_NAME));
 
         // create EntityContainer
         CsdlEntityContainer entityContainer = new CsdlEntityContainer();
