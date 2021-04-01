@@ -116,8 +116,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
                             new CsdlProperty()
                                     .setName("name")
                                     .setType(EdmPrimitiveTypeKind.String.getFullQualifiedName())));
-        }
-        else if (complexTypeName.equals(CT_TAG_FQN)) {
+        } else if (complexTypeName.equals(CT_TAG_FQN)) {
             // this doesn't really need to be repeated, but just keeping it simple for now to understand why
             complexType = new CsdlComplexType().setName(CT_TAG_NAME)
                     .setProperties(Arrays.asList(
