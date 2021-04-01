@@ -64,12 +64,11 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
         if (entityTypeName.equals(ET_PET_FQN)) {
             // create EntityType properties
-           /* CsdlProperty id = new CsdlProperty().setName("ID")
+            CsdlProperty id = new CsdlProperty().setName("id")
                     .setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
             CsdlProperty name = new CsdlProperty().setName("Name")
                     .setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
-            CsdlProperty description = new CsdlProperty().setName("Description")
-                    .setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());*/
+
 
             // create PropertyRef for Key element
             //CsdlPropertyRef propertyRef = new CsdlPropertyRef();
@@ -78,7 +77,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
             // configure EntityType
             entityType = new CsdlEntityType();
             entityType.setName(ET_PET_NAME);
-            //entityType.setProperties(Arrays.asList(id, name, description));
+            entityType.setProperties(Arrays.asList(id));
             //entityType.setKey(Arrays.asList(propertyRef));
 
         }
