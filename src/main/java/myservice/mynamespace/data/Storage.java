@@ -50,6 +50,9 @@ public class Storage {
     public Storage() {
 
         petList = new ArrayList<Entity>();
+
+        // creating some sample data
+        initPetSampleData();
     }
 
     /* PUBLIC FACADE */
@@ -229,7 +232,7 @@ public class Storage {
     private boolean petIdExists(int id) {
 
         for (Entity entity : this.petList) {
-            Integer existingID = (Integer) entity.getProperty("ID").getValue();
+            Integer existingID = (Integer) entity.getProperty("id").getValue();
             if (existingID.intValue() == id) {
                 return true;
             }
@@ -299,6 +302,35 @@ public class Storage {
             }
         }
         return false;
+    }
+
+    private void initPetSampleData() {
+
+        Entity entity = new Entity();
+        ComplexValue reusableComplexValue = new ComplexValue();
+
+        entity.addProperty(new Property(null, "id", ValueType.PRIMITIVE, 10));
+        entity.addProperty(new Property(null, "name", ValueType.PRIMITIVE, "doggie"));
+
+        reusableComplexValue = new ComplexValue();
+        reusableComplexValue.getValue().add(new Property(null, "id", ValueType.PRIMITIVE, "1"));
+        reusableComplexValue.getValue().add(new Property(null, "name", ValueType.PRIMITIVE, "Dogs"));
+        entity.addProperty(new Property(null, "category", ValueType.COMPLEX, reusableComplexValue));
+
+        entity.addProperty(new Property(null, "photoUrls", ValueType.PRIMITIVE,
+                "string"));
+
+        reusableComplexValue = new ComplexValue();
+        reusableComplexValue.getValue().add(new Property(null, "id", ValueType.PRIMITIVE, "0"));
+        reusableComplexValue.getValue().add(new Property(null, "name", ValueType.PRIMITIVE, "string"));
+        entity.addProperty(new Property(null, "tags", ValueType.COMPLEX, reusableComplexValue));
+
+        entity.addProperty(new Property(null, "status", ValueType.PRIMITIVE,
+                "available"));
+
+        entity.setType(DemoEdmProvider.ET_PET_FQN.getFullQualifiedNameAsString());
+        entity.setId(createId(entity, "id"));
+        petList.add(entity);
     }
 
     private URI createId(Entity entity, String idPropertyName) {

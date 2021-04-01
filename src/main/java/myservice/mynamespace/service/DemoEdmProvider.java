@@ -89,14 +89,14 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
 
             // create PropertyRef for Key element
-            //CsdlPropertyRef propertyRef = new CsdlPropertyRef();
-            //propertyRef.setName("ID");
+            CsdlPropertyRef propertyRef = new CsdlPropertyRef();
+            propertyRef.setName("id");
 
             // configure EntityType
             entityType = new CsdlEntityType();
             entityType.setName(ET_PET_NAME);
             entityType.setProperties(Arrays.asList(id, name, category, photoUrls, tags, status));
-            //entityType.setKey(Arrays.asList(propertyRef));
+            entityType.setKey(Arrays.asList(propertyRef));
 
         }
 
@@ -204,8 +204,8 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
     public CsdlEntityContainer getEntityContainer() {
 
         // create EntitySets
-        /*List<CsdlEntitySet> entitySets = new ArrayList<CsdlEntitySet>();
-        entitySets.add(getEntitySet(CONTAINER, ES_PRODUCTS_NAME));*/
+        List<CsdlEntitySet> entitySets = new ArrayList<CsdlEntitySet>();
+        entitySets.add(getEntitySet(CONTAINER, ES_PETS_NAME));
 
         // create EntityContainer
         CsdlEntityContainer entityContainer = new CsdlEntityContainer();
