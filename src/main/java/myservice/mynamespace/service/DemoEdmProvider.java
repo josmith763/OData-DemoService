@@ -54,6 +54,9 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
     public static final String CT_CATEGORY_NAME = "category";
     public static final FullQualifiedName CT_CATEGORY_FQN = new FullQualifiedName(NAMESPACE, CT_CATEGORY_NAME);
 
+    public static final String CT_TAG_NAME = "tags";
+    public static final FullQualifiedName CT_TAG_FQN = new FullQualifiedName(NAMESPACE, CT_TAG_NAME);
+
     // Entity Set Names
     public static final String ES_PETS_NAME = "Pets";
 
@@ -78,6 +81,9 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
             CsdlProperty photoUrls = new CsdlProperty().setName("photoUrls")
                     .setType(EdmPrimitiveTypeKind.String.getFullQualifiedName())
                     .setCollection(true);
+            CsdlProperty tags = new CsdlProperty().setName(CT_TAG_NAME)
+                    .setType(CT_TAG_FQN)
+                    .setCollection(true);
 
 
             // create PropertyRef for Key element
@@ -87,7 +93,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
             // configure EntityType
             entityType = new CsdlEntityType();
             entityType.setName(ET_PET_NAME);
-            entityType.setProperties(Arrays.asList(id, name, category, photoUrls));
+            entityType.setProperties(Arrays.asList(id, name, category, photoUrls, tags));
             //entityType.setKey(Arrays.asList(propertyRef));
 
         }
@@ -101,6 +107,17 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         CsdlComplexType complexType = null;
         if (complexTypeName.equals(CT_CATEGORY_FQN)) {
             complexType = new CsdlComplexType().setName(CT_CATEGORY_NAME)
+                    .setProperties(Arrays.asList(
+                            new CsdlProperty()
+                                    .setName("id")
+                                    .setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName()),
+                            new CsdlProperty()
+                                    .setName("name")
+                                    .setType(EdmPrimitiveTypeKind.String.getFullQualifiedName())));
+        }
+        else if (complexTypeName.equals(CT_TAG_FQN)) {
+            // this doesn't really need to be repeated, but just keeping it simple for now to understand why
+            complexType = new CsdlComplexType().setName(CT_TAG_NAME)
                     .setProperties(Arrays.asList(
                             new CsdlProperty()
                                     .setName("id")
@@ -169,6 +186,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         List<CsdlComplexType> complexTypes = new ArrayList<CsdlComplexType>();
         // add the complex type fqns
         complexTypes.add(getComplexType(CT_CATEGORY_FQN));
+        complexTypes.add(getComplexType(CT_TAG_FQN));
         schema.setComplexTypes(complexTypes);
 
         // add EntityContainer
