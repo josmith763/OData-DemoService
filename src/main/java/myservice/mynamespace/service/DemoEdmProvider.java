@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.olingo.commons.api.edm.EdmComplexType;
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.olingo.commons.api.edm.provider.CsdlAbstractEdmProvider;
@@ -39,18 +40,21 @@ import org.apache.olingo.commons.api.edm.provider.CsdlSchema;
 public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
     // Service Namespace
-    public static final String NAMESPACE = "OData.Demo";
+    public static final String NAMESPACE = "OData.PetStore";
 
     // EDM Container
     public static final String CONTAINER_NAME = "Container";
     public static final FullQualifiedName CONTAINER = new FullQualifiedName(NAMESPACE, CONTAINER_NAME);
 
     // Entity Types Names
-    public static final String ET_PRODUCT_NAME = "Product";
-    public static final FullQualifiedName ET_PRODUCT_FQN = new FullQualifiedName(NAMESPACE, ET_PRODUCT_NAME);
+    public static final String ET_PET_NAME = "Pet";
+    public static final FullQualifiedName ET_PET_FQN = new FullQualifiedName(NAMESPACE, ET_PET_NAME);
 
     // Entity Set Names
-    public static final String ES_PRODUCTS_NAME = "Products";
+    public static final String ES_PETS_NAME = "Pets";
+
+
+    // entity set is plural of feach entity type
 
     @Override
     public CsdlEntityType getEntityType(FullQualifiedName entityTypeName) {
@@ -58,7 +62,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         // this method is called for each EntityType that are configured in the Schema
         CsdlEntityType entityType = null;
 
-        if (entityTypeName.equals(ET_PRODUCT_FQN)) {
+        if (entityTypeName.equals(ET_PET_FQN)) {
             // create EntityType properties
            /* CsdlProperty id = new CsdlProperty().setName("ID")
                     .setType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
@@ -73,7 +77,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
             // configure EntityType
             entityType = new CsdlEntityType();
-            entityType.setName(ET_PRODUCT_NAME);
+            entityType.setName(ET_PET_NAME);
             //entityType.setProperties(Arrays.asList(id, name, description));
             //entityType.setKey(Arrays.asList(propertyRef));
 
@@ -90,11 +94,11 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
         if (entityContainer.equals(CONTAINER)) {
 
-            if (entitySetName.equals(ES_PRODUCTS_NAME)) {
+            if (entitySetName.equals(ES_PETS_NAME)) {
 
                 entitySet = new CsdlEntitySet();
-                entitySet.setName(ES_PRODUCTS_NAME);
-                entitySet.setType(ET_PRODUCT_FQN);
+                entitySet.setName(ES_PETS_NAME);
+                entitySet.setType(ET_PET_FQN);
 
                 // navigation
                /* CsdlNavigationPropertyBinding navPropBinding = new CsdlNavigationPropertyBinding();
@@ -132,7 +136,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
         // add EntityTypes
         List<CsdlEntityType> entityTypes = new ArrayList<CsdlEntityType>();
-        entityTypes.add(getEntityType(ET_PRODUCT_FQN));
+        entityTypes.add(getEntityType(ET_PET_FQN));
         schema.setEntityTypes(entityTypes);
 
         // add Complex Types
