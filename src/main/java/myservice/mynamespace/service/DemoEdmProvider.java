@@ -223,7 +223,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         // create EntityContainer
         CsdlEntityContainer entityContainer = new CsdlEntityContainer();
         entityContainer.setName(CONTAINER_NAME);
-        //entityContainer.setEntitySets(entitySets);
+        entityContainer.setEntitySets(entitySets);
 
         return entityContainer;
     }
