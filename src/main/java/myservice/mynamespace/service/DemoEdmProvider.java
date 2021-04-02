@@ -26,6 +26,7 @@ import org.apache.olingo.commons.api.edm.EdmComplexType;
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.olingo.commons.api.edm.provider.*;
+import org.apache.olingo.commons.api.edm.provider.annotation.CsdlConstantExpression;
 
 public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
@@ -35,7 +36,6 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
     // EDM Container
     public static final String CONTAINER_NAME = "Container";
     public static final FullQualifiedName CONTAINER = new FullQualifiedName(NAMESPACE, CONTAINER_NAME);
-
     // Entity Types Names
     public static final String ET_PET_NAME = "Pet";
     public static final FullQualifiedName ET_PET_FQN = new FullQualifiedName(NAMESPACE, ET_PET_NAME);
@@ -247,11 +247,13 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
         // add EntityContainer
         schema.setEntityContainer(getEntityContainer());
-
+        schema.setAnnotations(Arrays.asList(new CsdlAnnotation().setTerm("Core.Description").setExpression(
+                new CsdlConstantExpression(CsdlConstantExpression.ConstantExpressionType.String,
+                        "This is a sample Pet Store Server based on the OpenAPI 3.0 specification.  You can find out more about\\nSwagger at [http://swagger.io](http://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!\\nYou can now help us improve the API whether it's by making changes to the definition itself or to the code.\\nThat way, with time, we can improve the API in general, and expose some of the new features in OAS3.\\n\\nSome useful links:\\n- [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)\\n- [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)"))));
         // finally
         List<CsdlSchema> schemas = new ArrayList<CsdlSchema>();
         schemas.add(schema);
-
+//schema.
         return schemas;
     }
 
