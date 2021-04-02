@@ -56,6 +56,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
     // Enum type
     public static final FullQualifiedName ENT_ORDER_STATUS_FQN = new FullQualifiedName(NAMESPACE, "orderStatus");
+    public static final FullQualifiedName ENT_PET_STATUS_FQN = new FullQualifiedName(NAMESPACE, "petStatus");
 
     // See: https://stackoverflow.com/a/36058012
     public CsdlEnumType getEnumType(FullQualifiedName enumTypeName){
@@ -67,8 +68,17 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
                             new CsdlEnumMember().setName("approved").setValue("0"),
                             new CsdlEnumMember().setName("delivered").setValue("0")
                     ))
-                    .setUnderlyingType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName())
-                    ;
+                    .setUnderlyingType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
+        } else if (ENT_PET_STATUS_FQN.equals(enumTypeName))
+        {
+            return new CsdlEnumType()
+                    .setName(ENT_PET_STATUS_FQN.getName())
+                    .setMembers(Arrays.asList(
+                            new CsdlEnumMember().setName("Available").setValue("0"),
+                            new CsdlEnumMember().setName("Pending").setValue("0"),
+                            new CsdlEnumMember().setName("Sold").setValue("0")
+                    ))
+                    .setUnderlyingType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
         }
         return null;
     }
@@ -98,7 +108,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
                     .setType(CT_TAG_FQN)
                     .setCollection(true);
             CsdlProperty status = new CsdlProperty().setName("status")
-                    .setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+                    .setType(ENT_PET_STATUS_FQN);
 
 
             // create PropertyRef for Key element
@@ -225,6 +235,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         // add enum types
         List<CsdlEnumType> enumTypes = new ArrayList<CsdlEnumType>();
         enumTypes.add(getEnumType(ENT_ORDER_STATUS_FQN));
+        enumTypes.add(getEnumType(ENT_PET_STATUS_FQN));
         schema.setEnumTypes(enumTypes);
 
         // add Complex Types

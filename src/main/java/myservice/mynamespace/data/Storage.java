@@ -329,7 +329,7 @@ public class Storage {
         //entity.addProperty(new Property(null, "photoUrls", ValueType.PRIMITIVE, '1'));
 
 
-        entity.addProperty(new Property(null, "status", ValueType.PRIMITIVE, "available"));
+        entity.addProperty(new Property(null, "status", ValueType.ENUM, "Available"));
         entity.setType(DemoEdmProvider.ET_PET_FQN.getFullQualifiedNameAsString());
         entity.setId(createId(entity, "id"));
         petList.add(entity);
