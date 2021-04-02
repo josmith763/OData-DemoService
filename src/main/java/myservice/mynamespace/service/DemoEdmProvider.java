@@ -148,13 +148,15 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         } else if (entityTypeName.equals(ET_USER_FQN)) {
             CsdlProperty id = new CsdlProperty().setName("id")
                     .setType(EdmPrimitiveTypeKind.Int64.getFullQualifiedName());
+            CsdlProperty username = new CsdlProperty().setName("username")
+                    .setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 
             CsdlPropertyRef propertyRef = new CsdlPropertyRef();
             propertyRef.setName("id");
 
             entityType = new CsdlEntityType();
             entityType.setName(ET_USER_NAME);
-            entityType.setProperties(Arrays.asList(id));
+            entityType.setProperties(Arrays.asList(id, username));
             entityType.setKey(Arrays.asList(propertyRef));
         }
 
