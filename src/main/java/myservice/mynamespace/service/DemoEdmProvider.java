@@ -42,6 +42,9 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
     public static final String ET_ORDER_NAME = "Order";
     public static final FullQualifiedName ET_ORDER_FQN = new FullQualifiedName(NAMESPACE, ET_ORDER_NAME);
 
+    public static final String ET_USER_NAME = "User";
+    public static final FullQualifiedName ET_USER_FQN = new FullQualifiedName(NAMESPACE, ET_USER_NAME);
+
     // Complex types
     public static final String CT_CATEGORY_NAME = "category";
     public static final FullQualifiedName CT_CATEGORY_FQN = new FullQualifiedName(NAMESPACE, CT_CATEGORY_NAME);
@@ -52,6 +55,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
     // Entity Set Names
     public static final String ES_PETS_NAME = "Pets";
     public static final String ES_ORDERS_NAME = "Orders";
+    public static final String ES_USERS_NAME = "Users";
 
     // Enum type
     public static final FullQualifiedName ENT_ORDER_STATUS_FQN = new FullQualifiedName(NAMESPACE, "orderStatus");
