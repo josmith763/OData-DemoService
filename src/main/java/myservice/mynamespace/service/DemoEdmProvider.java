@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.olingo.commons.api.edm.EdmComplexType;
 import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.olingo.commons.api.edm.provider.*;
@@ -40,8 +39,8 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
     public static final String ET_PET_NAME = "Pet";
     public static final FullQualifiedName ET_PET_FQN = new FullQualifiedName(NAMESPACE, ET_PET_NAME);
 
-    public static final String ET_STORE_NAME = "Store";
-    public static final FullQualifiedName ET_STORE_FQN = new FullQualifiedName(NAMESPACE, ET_STORE_NAME);
+    public static final String ET_ORDER_NAME = "Order";
+    public static final FullQualifiedName ET_ORDER_FQN = new FullQualifiedName(NAMESPACE, ET_ORDER_NAME);
 
     // Complex types
     public static final String CT_CATEGORY_NAME = "category";
@@ -52,7 +51,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
 
     // Entity Set Names
     public static final String ES_PETS_NAME = "Pets";
-    public static final String ES_STORES_NAME = "Stores";
+    public static final String ES_ORDERS_NAME = "Orders";
 
     // Enum type
     public static final FullQualifiedName ENT_ORDER_STATUS_FQN = new FullQualifiedName(NAMESPACE, "orderStatus");
@@ -121,7 +120,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
             entityType.setProperties(Arrays.asList(id, name, category, photoUrls, tags, status));
             entityType.setKey(Arrays.asList(propertyRef));
 
-        } else if (entityTypeName.equals(ET_STORE_FQN)) {
+        } else if (entityTypeName.equals(ET_ORDER_FQN)) {
             CsdlProperty id = new CsdlProperty().setName("id")
                     .setType(EdmPrimitiveTypeKind.Int64.getFullQualifiedName());;
             CsdlProperty petId = new CsdlProperty().setName("petId")
@@ -139,7 +138,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
             propertyRef.setName("id");
 
             entityType = new CsdlEntityType();
-            entityType.setName(ET_STORE_NAME);
+            entityType.setName(ET_ORDER_NAME);
             entityType.setProperties(Arrays.asList(id, petId, quantity, shipDate, status, complete));
             entityType.setKey(Arrays.asList(propertyRef));
         }
@@ -196,10 +195,10 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
                 navPropBindingList.add(navPropBinding);
                 entitySet.setNavigationPropertyBindings(navPropBindingList);*/
 
-            } else if (entitySetName.equals(ES_STORES_NAME)) {
+            } else if (entitySetName.equals(ES_ORDERS_NAME)) {
                 entitySet = new CsdlEntitySet();
-                entitySet.setName(ES_STORES_NAME);
-                entitySet.setType(ET_STORE_FQN);
+                entitySet.setName(ES_ORDERS_NAME);
+                entitySet.setType(ET_ORDER_FQN);
             }
         }
 
@@ -229,7 +228,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         // add EntityTypes
         List<CsdlEntityType> entityTypes = new ArrayList<CsdlEntityType>();
         entityTypes.add(getEntityType(ET_PET_FQN));
-        entityTypes.add(getEntityType(ET_STORE_FQN));
+        entityTypes.add(getEntityType(ET_ORDER_FQN));
         schema.setEntityTypes(entityTypes);
 
         // add enum types
@@ -261,7 +260,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         // create EntitySets
         List<CsdlEntitySet> entitySets = new ArrayList<CsdlEntitySet>();
         entitySets.add(getEntitySet(CONTAINER, ES_PETS_NAME));
-        entitySets.add(getEntitySet(CONTAINER, ES_STORES_NAME));
+        entitySets.add(getEntitySet(CONTAINER, ES_ORDERS_NAME));
 
         // create EntityContainer
         CsdlEntityContainer entityContainer = new CsdlEntityContainer();
