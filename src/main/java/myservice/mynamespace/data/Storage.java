@@ -24,15 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.olingo.commons.api.data.ComplexValue;
 import org.apache.olingo.commons.api.data.Entity;
 import org.apache.olingo.commons.api.data.EntityCollection;
 import org.apache.olingo.commons.api.data.Property;
 import org.apache.olingo.commons.api.data.ValueType;
-import org.apache.olingo.commons.api.edm.EdmEntitySet;
-import org.apache.olingo.commons.api.edm.EdmEntityType;
-import org.apache.olingo.commons.api.edm.EdmKeyPropertyRef;
-import org.apache.olingo.commons.api.edm.FullQualifiedName;
+import org.apache.olingo.commons.api.edm.*;
 import org.apache.olingo.commons.api.ex.ODataRuntimeException;
 import org.apache.olingo.commons.api.http.HttpMethod;
 import org.apache.olingo.commons.api.http.HttpStatusCode;
@@ -46,13 +42,16 @@ public class Storage {
 
     // represent our database
     private List<Entity> petList;
+    private List<Entity> orderList;
 
     public Storage() {
 
         petList = new ArrayList<Entity>();
+        orderList = new ArrayList<Entity>();
 
         // creating some sample data
         initPetSampleData();
+        initOrderSampleData();
     }
 
     /* PUBLIC FACADE */
@@ -61,6 +60,8 @@ public class Storage {
 
         if (edmEntitySet.getName().equals(DemoEdmProvider.ES_PETS_NAME)) {
             entitySet = getPets();
+        } else if (edmEntitySet.getName().equals(DemoEdmProvider.ES_ORDERS_NAME)) {
+            entitySet = getOrders();
         }
         return entitySet;
     }
@@ -72,6 +73,8 @@ public class Storage {
 
         if (edmEntityType.getName().equals(DemoEdmProvider.ET_PET_NAME)) {
             entity = getPet(edmEntityType, keyParams);
+        } else if (edmEntityType.getName().equals(DemoEdmProvider.ET_ORDER_NAME)) {
+            entity = getOrder(edmEntityType, keyParams);
         }
         return entity;
     }
@@ -83,6 +86,8 @@ public class Storage {
         // actually, this is only required if we have more than one Entity Type
         if (edmEntityType.getName().equals(DemoEdmProvider.ET_PET_NAME)) {
             return createPet(edmEntityType, entityToCreate);
+        } else if (edmEntityType.getName().equals(DemoEdmProvider.ET_ORDER_NAME)) {
+            return createOrder(edmEntityType, entityToCreate);
         }
 
         return null;
@@ -110,6 +115,8 @@ public class Storage {
         // actually, this is only required if we have more than one Entity Type
         if (edmEntityType.getName().equals(DemoEdmProvider.ET_PET_NAME)) {
             deletePet(edmEntityType, keyParams);
+        } else if (edmEntityType.getName().equals(DemoEdmProvider.ET_ORDER_NAME)) {
+            deleteOrder(edmEntityType, keyParams);
         }
     }
 
@@ -188,6 +195,70 @@ public class Storage {
 
     /* INTERNAL */
 
+    private EntityCollection getOrders() {
+        EntityCollection retEntitySet = new EntityCollection();
+
+        for (Entity petEntity : this.orderList) {
+            retEntitySet.getEntities().add(petEntity);
+        }
+
+        return retEntitySet;
+    }
+
+    private Entity getOrder(EdmEntityType edmEntityType, List<UriParameter> keyParams) throws ODataApplicationException {
+
+        // the list of entities at runtime
+        EntityCollection entityCollection = getOrders();
+
+        /* generic approach to find the requested entity */
+        return Util.findEntity(edmEntityType, entityCollection, keyParams);
+    }
+
+    private Entity createOrder(EdmEntityType edmEntityType, Entity entity) {
+
+        // the ID of the newly created product entity is generated automatically
+        int newId = 1;
+        while (orderIdExists(newId)) {
+            newId++;
+        }
+
+        Property idProperty = entity.getProperty("id");
+        if (idProperty != null) {
+            idProperty.setValue(ValueType.PRIMITIVE, Integer.valueOf(newId));
+        } else {
+            // as of OData v4 spec, the key property can be omitted from the POST request body
+            entity.getProperties().add(new Property(null, "id", ValueType.PRIMITIVE, newId));
+        }
+//        entity.setId(createId("Orders", newId));
+        this.orderList.add(entity);
+
+        return entity;
+
+    }
+
+    private boolean orderIdExists(int id) {
+
+        for (Entity entity : this.orderList) {
+            Integer existingID = (Integer) entity.getProperty("id").getValue();
+            if (existingID.intValue() == id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void deleteOrder(EdmEntityType edmEntityType, List<UriParameter> keyParams)
+            throws ODataApplicationException {
+
+        Entity orderEntity = getOrder(edmEntityType, keyParams);
+        if (orderEntity == null) {
+            throw new ODataApplicationException("Entity not found", HttpStatusCode.NOT_FOUND.getStatusCode(), Locale.ENGLISH);
+        }
+
+        this.orderList.remove(orderEntity);
+    }
+
     private EntityCollection getPets() {
         EntityCollection retEntitySet = new EntityCollection();
 
@@ -242,7 +313,7 @@ public class Storage {
     }
 
     private void updatePet(EdmEntityType edmEntityType, List<UriParameter> keyParams, Entity entity,
-                               HttpMethod httpMethod) throws ODataApplicationException {
+                           HttpMethod httpMethod) throws ODataApplicationException {
 
         Entity petEntity = getPet(edmEntityType, keyParams);
         if (petEntity == null) {
@@ -333,6 +404,22 @@ public class Storage {
         entity.setType(DemoEdmProvider.ET_PET_FQN.getFullQualifiedNameAsString());
         entity.setId(createId(entity, "id"));
         petList.add(entity);
+    }
+
+
+    private void initOrderSampleData() {
+        Entity entity = new Entity();
+
+        entity.addProperty(new Property(null, "id", ValueType.PRIMITIVE, 10));
+        entity.addProperty(new Property(null, "petId", ValueType.PRIMITIVE, 198772));
+        entity.addProperty(new Property(null, "quantity", ValueType.PRIMITIVE, 7));
+//        entity.addProperty(new Property(null, "shipDate", ValueType.PRIMITIVE, "2021-04-02T14:40:39.459Z"));
+        entity.addProperty(new Property(null, "complete", ValueType.PRIMITIVE, true));
+//        entity.addProperty(new Property(null, "status", ValueType.ENUM, "Available"));
+
+        entity.setType(DemoEdmProvider.ET_ORDER_FQN.getFullQualifiedNameAsString());
+        entity.setId(createId(entity, "id"));
+        orderList.add(entity);
     }
 
 
