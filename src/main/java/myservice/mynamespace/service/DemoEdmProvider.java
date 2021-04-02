@@ -145,6 +145,17 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
             entityType.setName(ET_ORDER_NAME);
             entityType.setProperties(Arrays.asList(id, petId, quantity, shipDate, status, complete));
             entityType.setKey(Arrays.asList(propertyRef));
+        } else if (entityTypeName.equals(ET_USER_FQN)) {
+            CsdlProperty id = new CsdlProperty().setName("id")
+                    .setType(EdmPrimitiveTypeKind.Int64.getFullQualifiedName());
+
+            CsdlPropertyRef propertyRef = new CsdlPropertyRef();
+            propertyRef.setName("id");
+
+            entityType = new CsdlEntityType();
+            entityType.setName(ET_USER_NAME);
+            entityType.setProperties(Arrays.asList(id));
+            entityType.setKey(Arrays.asList(propertyRef));
         }
 
         return entityType;
@@ -203,6 +214,10 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
                 entitySet = new CsdlEntitySet();
                 entitySet.setName(ES_ORDERS_NAME);
                 entitySet.setType(ET_ORDER_FQN);
+            } else if (entitySetName.equals(ES_USERS_NAME)) {
+                entitySet = new CsdlEntitySet();
+                entitySet.setName(ES_USERS_NAME);
+                entitySet.setType(ET_USER_FQN);
             }
         }
 
@@ -233,6 +248,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         List<CsdlEntityType> entityTypes = new ArrayList<CsdlEntityType>();
         entityTypes.add(getEntityType(ET_PET_FQN));
         entityTypes.add(getEntityType(ET_ORDER_FQN));
+        entityTypes.add(getEntityType(ET_USER_FQN));
         schema.setEntityTypes(entityTypes);
 
         // add enum types
@@ -265,6 +281,7 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
         List<CsdlEntitySet> entitySets = new ArrayList<CsdlEntitySet>();
         entitySets.add(getEntitySet(CONTAINER, ES_PETS_NAME));
         entitySets.add(getEntitySet(CONTAINER, ES_ORDERS_NAME));
+        entitySets.add(getEntitySet(CONTAINER, ES_USERS_NAME));
 
         // create EntityContainer
         CsdlEntityContainer entityContainer = new CsdlEntityContainer();
