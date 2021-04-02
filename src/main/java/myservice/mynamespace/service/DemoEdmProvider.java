@@ -156,13 +156,15 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
                     .setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
             CsdlProperty email = new CsdlProperty().setName("email")
                     .setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
+            CsdlProperty password = new CsdlProperty().setName("password")
+                    .setType(EdmPrimitiveTypeKind.String.getFullQualifiedName());
 
             CsdlPropertyRef propertyRef = new CsdlPropertyRef();
             propertyRef.setName("id");
 
             entityType = new CsdlEntityType();
             entityType.setName(ET_USER_NAME);
-            entityType.setProperties(Arrays.asList(id, username, firstName, lastName, email));
+            entityType.setProperties(Arrays.asList(id, username, firstName, lastName, email, password));
             entityType.setKey(Arrays.asList(propertyRef));
         }
 
