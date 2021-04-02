@@ -64,8 +64,8 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
                     .setName(ENT_ORDER_STATUS_FQN.getName())
                     .setMembers(Arrays.asList(
                             new CsdlEnumMember().setName("placed").setValue("0"),
-                            new CsdlEnumMember().setName("approved").setValue("0"),
-                            new CsdlEnumMember().setName("delivered").setValue("0")
+                            new CsdlEnumMember().setName("approved").setValue("1"),
+                            new CsdlEnumMember().setName("delivered").setValue("2")
                     ))
                     .setUnderlyingType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
         } else if (ENT_PET_STATUS_FQN.equals(enumTypeName))
@@ -74,8 +74,8 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
                     .setName(ENT_PET_STATUS_FQN.getName())
                     .setMembers(Arrays.asList(
                             new CsdlEnumMember().setName("Available").setValue("0"),
-                            new CsdlEnumMember().setName("Pending").setValue("0"),
-                            new CsdlEnumMember().setName("Sold").setValue("0")
+                            new CsdlEnumMember().setName("Pending").setValue("1"),
+                            new CsdlEnumMember().setName("Sold").setValue("2")
                     ))
                     .setUnderlyingType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName());
         }
