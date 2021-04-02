@@ -63,9 +63,9 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
             return new CsdlEnumType()
                     .setName(ENT_ORDER_STATUS_FQN.getName())
                     .setMembers(Arrays.asList(
-                            new CsdlEnumMember().setName("placed").setValue("0"),
-                            new CsdlEnumMember().setName("approved").setValue("0"),
-                            new CsdlEnumMember().setName("delivered").setValue("0")
+                            new CsdlEnumMember().setName("placed").setValue("placed"),
+                            new CsdlEnumMember().setName("approved").setValue("setValue"),
+                            new CsdlEnumMember().setName("delivered").setValue("delivered")
                     ))
                     .setUnderlyingType(EdmPrimitiveTypeKind.Int32.getFullQualifiedName())
                     ;
