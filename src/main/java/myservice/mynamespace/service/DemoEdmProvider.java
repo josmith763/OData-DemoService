@@ -289,7 +289,10 @@ public class DemoEdmProvider extends CsdlAbstractEdmProvider {
                         "This is a sample Pet Store Server based on the OpenAPI 3.0 specification.  You can find out more about\\nSwagger at [http://swagger.io](http://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!\\nYou can now help us improve the API whether it's by making changes to the definition itself or to the code.\\nThat way, with time, we can improve the API in general, and expose some of the new features in OAS3.\\n\\nSome useful links:\\n- [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)\\n- [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)")),
                 new CsdlAnnotation().setTerm("Core.SchemaVersion").setExpression(
                         new CsdlConstantExpression(CsdlConstantExpression.ConstantExpressionType.String,
-                                "1.0.6-SNAPSHOT"))
+                                "1.0.6-SNAPSHOT")),
+                new CsdlAnnotation().setTerm("Core.Description").setExpression(
+                        new CsdlConstantExpression(CsdlConstantExpression.ConstantExpressionType.String,
+                                "http://swagger.io/terms/"))
                 ));
         // finally
         List<CsdlSchema> schemas = new ArrayList<CsdlSchema>();
